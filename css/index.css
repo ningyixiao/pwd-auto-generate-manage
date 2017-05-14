@@ -1,0 +1,38 @@
+.reg_info {
+    position: absolute;
+    top: -4rem;
+    left: 0;
+    right: 0;
+    min-height: 1.5rem;
+    padding: 0.5rem 1rem;
+    margin: 0 1rem;
+    color: #fff;
+    text-align: center;
+    opacity: 1;
+    transition: opacity 5s linear;
+}
+
+.success {
+    background: #00C851;
+    opacity: 0;  
+}
+
+.fail {
+    background: #db0000;
+    opacity: 0;
+}
+
+#reg_nickname_info{
+    display: none;
+    position: absolute;
+    right: 0.8rem;
+    top: 0.8rem;
+    color: red;
+}
+#reg_pwd_info{
+    display: none;
+    position: absolute;
+    right: 0.8rem;
+    top: 0.8rem;
+    color: red;
+}

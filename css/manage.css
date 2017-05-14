@@ -1,0 +1,20 @@
+.cus_sidebar{
+    position: fixed;
+    background: #37474F;
+    width: 20%;
+    height: 100%;
+    color: #fff;
+    padding: 0.5rem 1rem;
+}
+.cus_sidebar li{
+    width: 100%;
+    line-height: 1.5;
+    text-align: center;
+}
+.cus_sidebar li a{
+    display: block;
+    color: #fff;
+}
+.cus_sidebar li a:hover{
+    background-color: #33b5e5;
+}
