@@ -30,31 +30,33 @@
             </a>
             <div class="collapse navbar-collapse" id="navbarNav1">
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <a class="nav-link">mode</a>
-                    </li>
-                    <?php if(isset($_COOKIE["access_confirm"])){ ?>
-                    <li class="nav-item dropdown btn-group">
-                        <a class="nav-link dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">username</a>
-                        <div class="dropdown-menu dropdown" aria-labelledby="dropdownMenu1">
-                            <a class="dropdown-item">
+                    <?php if(isset($_COOKIE["token"])){ ?>
+                    <li id="nav_item1" class="nav-item dropdown btn-group">
+                        <a class="nav-link dropdown-toggle" id="userdropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <?php echo $_COOKIE["nickname"] ?>
+                        </a>
+                        <div class="dropdown-menu dropdown" aria-labelledby="userdropdownMenu">
+                            <a href="manage.php" class="dropdown-item">
                                 <i class="fa fa-windows" aria-hidden="true"></i>
                                 The Console
                             </a>
-                            <a class="dropdown-item">
+                            <a href="logout.php" class="dropdown-item">
                                 <i class="fa fa-sign-out" aria-hidden="true"></i>
                                 Log Out
                             </a>
                         </div>
                     </li>
                     <?php }else{ ?>
-                    <li class="nav-item">
+                    <li id="nav_item2" class="nav-item">
                         <a data-toggle="modal" data-target="#modalLoginForm" class="nav-link">
                             <i class="fa fa-sign-in" aria-hidden="true"></i>
                             Log In
                         </a>
                     </li>
                     <?php } ?>
+                    <li class="nav-item">
+                        <a class="nav-link">mode</a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -88,17 +90,18 @@
                             <div class="modal-body mb-1">
                                 <div class="md-form form-sm">
                                     <i class="fa fa-user-circle-o prefix"></i>
-                                    <input type="text" id="form22" class="form-control">
-                                    <label for="form22">Your Nickname</label>
+                                    <input type="text" id="log_nickname" class="form-control">
+                                    <label for="log_nickname">Your Nickname</label>
                                 </div>
 
                                 <div class="md-form form-sm">
                                     <i class="fa fa-lock prefix"></i>
-                                    <input type="password" id="form23" class="form-control">
-                                    <label for="form23">Your Password</label>
+                                    <input type="password" id="log_pwd" class="form-control">
+                                    <label for="log_pwd">Your Password</label>
+                                    <span id="log_pwd_info">password is incorrect</span>
                                 </div>
                                 <div class="text-center mt-2">
-                                    <button class="btn btn-info">Log in <i class="fa fa-sign-in ml-1"></i></button>
+                                    <button id="log_btn" class="btn btn-info">Log in <i class="fa fa-sign-in ml-1"></i></button>
                                     <button type="button" class="btn btn-outline-info waves-effect ml-auto" data-dismiss="modal">Close <i class="fa fa-times-circle ml-1"></i></button>
                                 </div>
                             </div>

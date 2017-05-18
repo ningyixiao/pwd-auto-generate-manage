@@ -87,5 +87,30 @@ $(function() {
     });
 
     // login controll
-    
+    $("#log_btn").click(function(e) {
+        var nickname = $("#log_nickname").val();
+        var pwd = $("#log_pwd").val();
+        if (nickname.length == 0 || pwd.length == 0) {
+            return;
+        } else {
+            var data = {
+                "nickname": nickname,
+                "pwd": md5(pwd)
+            };
+            $.ajax({
+                type: "post",
+                url: "api/login.php",
+                data: data,
+                dataType: "json",
+                success: function(data) {
+                    if(data.state == 1){
+                        $("#modalLoginForm").modal('hide');
+                        $("#userdropdownMenu").html(data.nickname);
+                        window.location.href="index.php";
+                    }
+                },
+                error: function() {}
+            });
+        }
+    });
 })

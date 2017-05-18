@@ -36,3 +36,10 @@
     top: 0.8rem;
     color: red;
 }
+#log_pwd_info{
+    display: none;
+    position: absolute;
+    right: 0.8rem;
+    top: 0.8rem;
+    color: red;
+}
