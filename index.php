@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Key-Auto-Generator</title>
+    <title>Pwd-Auto-Generator</title>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="res/font-awesome/css/font-awesome.min.css">
     <!-- Bootstrap core CSS -->
@@ -18,7 +18,7 @@
     <link href="css/index.css" rel="stylesheet">
 </head>
 
-<body>
+<body class="mode">
     <!--Navbar-->
     <nav class="navbar navbar-toggleable-md navbar-dark special-color-dark bg-primary">
         <div class="container">
@@ -55,7 +55,7 @@
                     </li>
                     <?php } ?>
                     <li class="nav-item">
-                        <a class="nav-link">mode</a>
+                        <a id="change_mode" class="nav-link">mode</a>
                     </li>
                 </ul>
             </div>
@@ -171,6 +171,8 @@
     <script type="text/javascript" src="res/mdb/js/mdb.min.js"></script>
     <!-- md5 -->
     <script type="text/javascript" src="res/md5.min.js"></script>
+    <!-- AES -->
+    <script type="text/javascript" src="res/crypto-js.min.js"></script>
     <script type="text/javascript" src="js/index.js"></script>
 </body>
 
