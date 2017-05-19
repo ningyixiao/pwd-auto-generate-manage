@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Pwd-Auto-Generator</title>
+    <title>Key-Auto-Generator</title>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="res/font-awesome/css/font-awesome.min.css">
     <!-- Bootstrap core CSS -->
@@ -152,8 +152,14 @@
             <!--/.Content-->
         </div>
     </div>
-    <!--Modal: Login / Register Form-->
-    
+    <!--/.Modal: Login / Register Form-->
+    <!-- main function -->
+    <div class="main_section">
+        <div id="random_key_area" class="random_key_area">hhh</div>
+        <div class="mask"></div>
+        <a class="generate_btn">Generate</a>
+    </div>
+    <!-- /.main function -->
     <!-- SCRIPTS -->
     <!-- JQuery -->
     <script type="text/javascript" src="res/mdb/js/jquery-3.1.1.min.js"></script>

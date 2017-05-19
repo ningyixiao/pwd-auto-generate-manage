@@ -14,7 +14,7 @@
 
 .success {
     background: #00C851;
-    opacity: 0;  
+    opacity: 0;
 }
 
 .fail {
@@ -22,24 +22,60 @@
     opacity: 0;
 }
 
-#reg_nickname_info{
+#reg_nickname_info {
     display: none;
     position: absolute;
     right: 0.8rem;
     top: 0.8rem;
     color: red;
 }
-#reg_pwd_info{
+
+#reg_pwd_info {
     display: none;
     position: absolute;
     right: 0.8rem;
     top: 0.8rem;
     color: red;
 }
-#log_pwd_info{
+
+#log_pwd_info {
     display: none;
     position: absolute;
     right: 0.8rem;
     top: 0.8rem;
     color: red;
+}
+
+
+/* main_section */
+
+.random_key_area, .mask{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 50rem;
+    height: 3.5rem;
+    margin-top: -7rem;
+    margin-left: -25rem;
+    padding: 0.5rem 1rem;
+    line-height: 2.5rem;
+    text-align: center;
+}
+.random_key_area{
+    border: 1px solid #ddd;
+}
+.generate_btn{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20rem;
+    height: 3.5rem;
+    margin-top: -2rem;
+    margin-left: -10rem;
+    padding: 0.5rem 1rem;
+    line-height: 2.5rem;
+    text-align: center;
+    background-color: #263238;
+    color: #fff!important;
+    border-radius: 1rem;
 }
