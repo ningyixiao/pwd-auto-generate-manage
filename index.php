@@ -155,9 +155,13 @@
     <!--/.Modal: Login / Register Form-->
     <!-- main function -->
     <div class="main_section">
-        <div id="random_key_area" class="random_key_area">hhh</div>
-        <div class="mask"></div>
-        <a class="generate_btn">Generate</a>
+        <div class="wrap">
+            <div id="random_key_area" class="random_key_area"></div>
+            <div class="mask">
+                <a id="saveKey" href="#">Save it into your repository</a>
+            </div> 
+        </div>
+        <a id="generate_btn" class="generate_btn">Generate</a>
     </div>
     <!-- /.main function -->
     <!-- SCRIPTS -->
@@ -173,6 +177,8 @@
     <script type="text/javascript" src="res/md5.min.js"></script>
     <!-- AES -->
     <script type="text/javascript" src="res/crypto-js.min.js"></script>
+    <!-- jquery.cookie.js -->
+    <script type="text/javascript" src="res/jquery.cookie.js"></script>
     <script type="text/javascript" src="js/index.js"></script>
 </body>
 

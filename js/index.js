@@ -8,7 +8,7 @@ function randomArray(times, array) {
     return r_array;
 }
 
-function calArrayItemDistance(array, min, max) {
+function judgeArrayItemDistance(array, min, max) {
     var length = array.length;
     var state = true;
     ((max - array[0]) <= 0) && (state = false);
@@ -33,7 +33,7 @@ function numDivideArray(times, num) {
         node_arr.sort(function(a, b) {
             return b - a
         });
-        if (calArrayItemDistance(node_arr, 0, num)) {
+        if (judgeArrayItemDistance(node_arr, 0, num)) {
             var count = node_arr.length + 1;
             var temp_arr = [];
             node_arr.unshift(num);
@@ -79,11 +79,36 @@ function pwdGenerate() {
     return randomPwdArray.join("");
 }
 $(function() {
-    // listen mode button
+    // listen mode button click event
     $("#change_mode").click(function() {
         $("body").toggleClass("mode-bg");
         $("#random_key_area").toggleClass("mode-border mode-color");
         $(".generate_btn").toggleClass("mode-border");
+    });
+    // listen Generate button click event
+    $("#generate_btn").click(function() {
+        var randomPwdStr = pwdGenerate();
+        $("#random_key_area").html(randomPwdStr);
+    });
+    //listen mouse enter&leave the random_key_area event
+    $(".wrap").mouseenter(function() {
+        if ($("#random_key_area").html().length > 0) {
+            $(".mask").css("display", "unset");
+            $(".random_key_area").css("color", "#fff");
+        }
+    }).mouseleave(function() {
+        $(".mask").css("display", "none");
+        $(".random_key_area").css("color", "unset");
+    });
+    //listen Save click event
+    $("#saveKey").click(function(e) {
+        e.preventDefault();
+        // judge user state log in/sign out
+        if ($.cookie("token") == null) {
+            $("#modalLoginForm").modal("show");
+        }else{
+            // show key info modal
+        }
     });
     // Register Controll
     // validate input of nickname and pwd
