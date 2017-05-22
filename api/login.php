@@ -3,7 +3,7 @@
     require('init_0.php');
     @$nickname=$_REQUEST['nickname'];
     @$pwd=$_REQUEST['pwd'];
-    $sql="SELECT * FROM User WHERE nickname = '$nickname';";
+    $sql="SELECT * FROM UserInfo WHERE nickname = '$nickname';";
     $result=mysqli_query($conn,$sql);
     if($result->num_rows > 0){
         while($row = mysqli_fetch_assoc($result)){

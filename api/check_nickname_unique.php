@@ -2,7 +2,7 @@
     header("Content-type:application/json;charset=utf-8");
     require('init_0.php');
     @$nickname=$_REQUEST['nickname'];
-    $sql="SELECT * FROM User WHERE nickname = '$nickname';";
+    $sql="SELECT * FROM UserInfo WHERE nickname = '$nickname';";
     $result=mysqli_query($conn,$sql);
     if($result){
         $name=mysqli_fetch_assoc($result);

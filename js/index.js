@@ -106,8 +106,24 @@ $(function() {
         // judge user state log in/sign out
         if ($.cookie("token") == null) {
             $("#modalLoginForm").modal("show");
-        }else{
-            // show key info modal
+        } else {
+            // if openKey is set, then show save key modal
+            $.ajax({
+                type: "post",
+                url: "api/check_openKey.php",
+                data: { "nickname": $.cookie("nickname") },
+                dataType: "json",
+                success: function(data) {
+                    // console.log(data);
+                    // data.checkState = true, indicate that openKey is set
+                    if(data.checkState){
+                        // show save key modal
+                    }else{
+                        // link to openKey set page
+                    }
+                },
+                error: function() {}
+            });
         }
     });
     // Register Controll
