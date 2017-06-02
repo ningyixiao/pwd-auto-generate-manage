@@ -67,51 +67,81 @@
         <div class="accordion">
             <div class="section">
                 <input type="radio" name="accordion-1" id="section-1" checked="checked" />
-                <label for="section-1"><span>Messages</span></label>
+                <label id="label_openKey" for="section-1"><span>openKey</span></label>
                 <div class="content">
                     <ul>
-                        <li><i class="fa fa-inbox"></i><span>Inbox</span></li>
-                        <li><i class="fa fa-share"></i><span>Sent    </span></li>
-                        <li><i class="fa fa-archive"></i><span>Archive</span></li>
+                        <li><i class="fa fa-cog"></i><a class="func_link" id="set">set</a></li>
                     </ul>
                 </div>
             </div>
             <div class="section">
                 <input type="radio" name="accordion-1" id="section-2" value="toggle" />
-                <label for="section-2"><span>Usage</span></label>
+                <label id="key_repo" for="section-2"><span>Key Repository</span></label>
                 <div class="content">
                     <ul>
-                        <li><i class="fa fa-cog"></i><span>System</span></li>
-                        <li><i class="fa fa-group"></i><span>Users    </span></li>
-                        <li><i class="fa fa-sitemap"></i><span>Visitation</span></li>
+                        <li><i class="fa fa-user"></i><a class="func_link key" id="p_key" data-share="1">private key</a></li>
+                        <li><i class="fa fa-chain"></i><a class="func_link key" id="s_key_u" data-share="2">share with user</a></li>
+                        <!-- <li><i class="fa fa-chain"></i><a class="func_link key" id="s_key_g" data-share="3">share with group</a></li> -->
                     </ul>
                 </div>
             </div>
-            <div class="section">
+            <!-- <div class="section">
                 <input type="radio" name="accordion-1" id="section-3" value="toggle" />
-                <label for="section-3"><span>Scroller</span></label>
+                <label for="section-3"><span>Group</span></label>
                 <div class="content">
-                    <ul>
-                        <li><i class="fa fa-coffee"></i><span>Need Coffee</span></li>
-                        <li><i class="fa fa-coffee"></i><span>Need Coffee    </span></li>
-                        <li><i class="fa fa-coffee"></i><span>Need Coffee</span></li>
-                        <li><i class="fa fa-coffee"></i><span>Need Coffee</span></li>
-                        <li><i class="fa fa-coffee"></i><span>Need Coffee    </span></li>
-                        <li><i class="fa fa-coffee"></i><span>Need Coffee</span></li>
-                        <li><i class="fa fa-coffee"></i><span>Need Coffee</span></li>
-                        <li><i class="fa fa-coffee"></i><span>Need Coffee    </span></li>
-                        <li><i class="fa fa-coffee"></i><span>Need Coffee</span></li>
+                    <ul id="group_list">
+                        <li><i class="fa fa-group"></i><a class="func_link group" id="group_groupname">g1</a></li>
                     </ul>
                 </div>
-            </div>
-            <div class="section">
-                <input type="radio" name="accordion-1" id="section-4" value="toggle" />
-                <label for="section-4"><span>Section 4</span></label>
-                <div class="content"></div>
-            </div>
+            </div> -->
         </div>
     </div>
     <!--/. Sidebar -->
+    <!-- main area -->
+    <div id="main" class="main">
+        <div class="m_section" data-origin="set">
+            <div class="card">
+                    <div class="card-block">
+                        <div class="set_info_box"></div>
+                        <!--Header-->
+                        <div class="text-center">
+                            <h3><i class="fa fa-pencil"></i> Set your openKey</h3>
+                            <hr class="mt-2 mb-2">
+                        </div>
+                        <!--Body-->
+                        <p>You must set the openKey before you save the key.</p>
+                        <br>
+                        <!--Body-->
+                        <div class="md-form">
+                            <i class="fa fa-lock prefix"></i>
+                            <input type="password" id="set_pwd" class="form-control">
+                            <label for="set_pwd">Your account password</label>
+                            <div class="set_info0 info">wrong password</div>
+                        </div>
+                        <div class="md-form">
+                            <i class="fa fa-key prefix"></i>
+                            <input type="password" id="set_openKey" class="form-control">
+                            <label for="set_openKey">Your openKey</label>
+                            <div class="set_info1 info">not allowd null</div>
+                        </div>
+                        <div class="md-form">
+                            <i class="fa fa-key prefix"></i>
+                            <input type="password" id="set_openKey_confirm" class="form-control">
+                            <label for="set_openKey_confirm">Reenter your openKey</label>
+                            <div class="set_info2 info">not allowd null</div>
+                        </div>
+                        <div class="text-center">
+                            <button id="set_btn" class="btn btn-deep-orange waves-effect waves-light">Confirm</button>
+                        </div>
+                    </div>
+            </div>
+        </div>
+        <div class="m_section" data-origin="p_key"></div>
+        <div class="m_section" data-origin="s_key_u"></div>
+        <div class="m_section" data-origin="s_key_g"></div>
+        <div class="m_section" data-origin="group"></div>
+    </div>
+    <!-- /.main area -->
     <!-- SCRIPTS -->
     <!-- JQuery -->
     <script type="text/javascript" src="res/mdb/js/jquery-3.1.1.min.js"></script>
@@ -121,7 +151,29 @@
     <script type="text/javascript" src="res/mdb/js/bootstrap.min.js"></script>
     <!-- MDB core JavaScript -->
     <script type="text/javascript" src="res/mdb/js/mdb.min.js"></script>
+    <!-- md5 -->
+    <script type="text/javascript" src="res/md5.min.js"></script>
+    <!-- AES -->
+    <script type="text/javascript" src="res/crypto-js.min.js"></script>
+    <!-- jquery.cookie.js -->
+    <script type="text/javascript" src="res/jquery.cookie.js"></script>
     <script type="text/javascript" src="js/manage.js"></script>
+    <?php if(isset($_REQUEST['hasOpenKey'])){ ?> 
+    <script>
+        // url attr hasOpenKey exist
+        $(function(){
+           $("#label_openKey").trigger("click");
+           $("#set").trigger("click"); 
+        }) 
+    </script>
+    <?php }else{ ?>
+    <script>
+        $(function(){
+           $("#key_repo").trigger("click");
+           $("#p_key").trigger("click"); 
+        })   
+    </script>   
+    <?php } ?>
 </body>
 
 </html>

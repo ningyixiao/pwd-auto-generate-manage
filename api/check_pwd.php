@@ -8,11 +8,8 @@
     if($result->num_rows > 0){
         while($row = mysqli_fetch_assoc($result)){
             if(strcmp($pwd,$row['pwd']) == 0){
-                $data['msg']='log in success';
+                $data['msg']='password correct';
                 $data['state']=1;
-                $data['nickname']=$row['nickname'];
-                setcookie("token",md5($row['uid']),time()+60*60,"/");
-                setcookie("nickname",$row['nickname'],time()+60*60,"/");
             }else{
                 $data['msg']='password incorrect';
                 $data['state']=2;

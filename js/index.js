@@ -1,3 +1,12 @@
+// AES algorithm
+function encryptAES(rowKey, openKey) {
+    return CryptoJS.AES.encrypt(rowKey, openKey).toString();
+}
+
+function decryptAES(encKey, openKey) {
+    return CryptoJS.AES.decrypt(encKey, openKey).toString(CryptoJS.enc.Utf8);
+}
+
 function randomArray(times, array) {
     var length = array.length;
     var r_array = [];
@@ -79,6 +88,12 @@ function pwdGenerate() {
     return randomPwdArray.join("");
 }
 $(function() {
+    // When access this page, firstly judge has cookie 
+    // If not, then show the login modal
+    // If exist, not hide the login modal
+    if ($.cookie("nickname") == null) {
+        $("#modalLoginForm").modal('show');
+    }
     // listen mode button click event
     $("#change_mode").click(function() {
         $("body").toggleClass("mode-bg");
@@ -116,15 +131,74 @@ $(function() {
                 success: function(data) {
                     // console.log(data);
                     // data.checkState = true, indicate that openKey is set
-                    if(data.checkState){
+                    if (data.checkState) {
                         // show save key modal
-                    }else{
+                        $("#modalSaveKeyForm").modal("show");
+                    } else {
                         // link to openKey set page
+                        window.location.href = "manage.php?hasOpenKey=false";
                     }
                 },
                 error: function() {}
             });
         }
+    });
+    //listen Save Key button click event
+    $("#saveKeyBtn").click(function() {
+        var feature = $("#key_feature").val();
+        if (feature.length == 0) {
+            $("#key_feature_info").html("not allowd null");
+            $("#key_feature_info").css("display", "block");
+        } else if ($.cookie("nickname") == null) {
+            $("#modalLoginForm").modal("show");
+        } else {
+            // encrypt key with openKey by AES
+            var creator = $.cookie("nickname");
+            // get user's openKey
+            $.ajax({
+                type: "post",
+                url: "api/get_user_openKey.php",
+                data: { "nickname": creator },
+                dataType: "json",
+                success: function(data) {
+                    if (data.state == 1) {
+                        // post a http request for save this key 
+                        var rowKey = $("#random_key_area").html();
+                        var openKey = data.openKey;
+                        var genKey = encryptAES(rowKey, openKey);
+                        var shareState = 1;
+                        var data = {
+                            "creator": creator,
+                            "feature": feature,
+                            "genKey": genKey,
+                            "shareState": shareState
+                        };
+                        $.ajax({
+                            type: "post",
+                            url: "api/save_key.php",
+                            data: data,
+                            dataType: "json",
+                            success: function(data) {
+                                if(data.state == 1){
+                                    window.location.href = "manage.php";
+                                }else{
+                                    alert(data.msg);
+                                }
+                            },
+                            error:function(){}
+                        });
+                    } else {
+                        // get openKey fail
+
+                    }
+                },
+                error: function() {}
+            });
+        }
+    });
+    // listen key_feature input box focus event
+    $("#key_feature").focus(function() {
+        $("#key_feature_info").css("display", "none");
     });
     // Register Controll
     // validate input of nickname and pwd

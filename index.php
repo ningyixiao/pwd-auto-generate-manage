@@ -153,6 +153,35 @@
         </div>
     </div>
     <!--/.Modal: Login / Register Form-->
+    <!-- Modal: Save Key info -->
+    <div class="modal fade" id="modalSaveKeyForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog cascading-modal" role="document">
+            <!--Content-->
+            <div class="modal-content">
+                <!--Header-->
+                <div class="modal-header light-blue darken-3 white-text">
+                    <button type="button" class="close waves-effect waves-light" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="title"><i class="fa fa-save"></i>  Save Key</h4>
+                </div>
+                <!--Body-->
+                <div class="modal-body mb-0">
+                    <div class="md-form form-sm">
+                        <i class="fa fa-pencil-square-o prefix"></i>
+                        <input type="text" id="key_feature" class="form-control">
+                        <label for="form8">Description of your key</label>
+                        <div id="key_feature_info"></div>
+                    </div>
+                    <div class="text-center mt-1-half">
+                        <button id="saveKeyBtn" class="btn btn-info mb-2 waves-effect waves-light">Save</button>
+                    </div>
+                </div>
+            </div>
+            <!--/.Content-->
+        </div>
+    </div>
+    <!-- /.Modal: Save Key info -->
     <!-- main function -->
     <div class="main_section">
         <div class="wrap">

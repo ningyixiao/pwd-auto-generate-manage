@@ -207,3 +207,57 @@
     font-size: 70px;
     color: #21CCFC;
 }
+
+
+/* main section style */
+
+.set_info_box {
+    position: absolute;
+    top: -2.5rem;
+    line-height: 2.5rem;
+    left: 0;
+    right: 0;
+    color: #fff;
+    text-align: center;
+    opacity: 1;
+    transition: opacity 5s linear;
+}
+
+.set_success {
+    background-color: #00C851;
+    opacity: 0;
+}
+
+.set_fail {
+    background-color: #ff4444;
+    opacity: 0;
+}
+
+.m_section {
+    display: none;
+    position: absolute;
+    top: 3.5rem;
+    left: 200px;
+    right: 0;
+    bottom: 0;
+}
+
+.m_section .card {
+    width: 50%;
+    margin-left: 25%;
+    margin-top: 5rem;
+}
+
+.info {
+    position: absolute;
+    line-height: 2.1rem;
+    bottom: 0.5rem;
+    right: 0;
+    color: #f00;
+}
+
+.set_info0,
+.set_info1,
+.set_info2 {
+    display: none;
+}

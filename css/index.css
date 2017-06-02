@@ -46,6 +46,13 @@
     color: red;
 }
 
+#key_feature_info {
+    display: none;
+    position: absolute;
+    right: 0.8rem;
+    top: 0.8rem;
+    color: red;
+}
 
 /* main_section */
 
