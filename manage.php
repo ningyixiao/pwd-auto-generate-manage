@@ -61,7 +61,6 @@
         </div>
     </nav>
     <!--/.Navbar-->
-    
     <!-- Sidebar -->
     <div class="left-menu">
         <div class="accordion">
@@ -97,6 +96,35 @@
         </div>
     </div>
     <!--/. Sidebar -->
+    <!-- Modal: Look Key -->
+    <div class="modal fade" id="modalLookKeyForm" tabindex="-1" role="dialog" aria-labelledby="modalLookKeyFormLabel" aria-hidden="true">
+        <div class="modal-dialog cascading-modal" role="document">
+            <!--Content-->
+            <div class="modal-content">
+                <!--Header-->
+                <div class="modal-header light-blue darken-3 white-text">
+                    <button type="button" class="close waves-effect waves-light" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="title"><i class="fa fa-save"></i> Enter openKey</h4>
+                </div>
+                <!--Body-->
+                <div class="modal-body mb-0">
+                    <div class="md-form form-sm">
+                        <i class="fa fa-pencil-square-o prefix"></i>
+                        <input type="password" id="enter_openKey" class="form-control">
+                        <label for="form8">your openKey</label>
+                        <div id="enter_openKey_info"></div>
+                    </div>
+                    <div class="text-center mt-1-half">
+                        <button id="confirm_openKey_btn" class="btn btn-info mb-2 waves-effect waves-light">Confirm</button>
+                    </div>
+                </div>
+            </div>
+            <!--/.Content-->
+        </div>
+    </div>
+    <!-- /.Modal: Look Key -->
     <!-- main area -->
     <div id="main" class="main">
         <div class="m_section" data-origin="set">
@@ -136,10 +164,32 @@
                     </div>
             </div>
         </div>
-        <div class="m_section" data-origin="p_key"></div>
-        <div class="m_section" data-origin="s_key_u"></div>
-        <div class="m_section" data-origin="s_key_g"></div>
-        <div class="m_section" data-origin="group"></div>
+        <div class="m_section key_list" data-origin="p_key">
+            <table class="table">
+                <thead class="thead-inverse">
+                    <tr>
+                        <th>Description</th>
+                        <th>Key</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="p_key_list">
+                    <!-- <tr>
+                        <td>Abby</td>
+                        <td>Barrett</td>
+                        <td>
+                            <a class="blue-text"><i class="fa fa-eye"></i></a>
+                            <a class="teal-text"><i class="fa fa-pencil"></i></a>
+                            <a class="blue-grey-text"><i class="fa fa-share-alt"></i></a>
+                            <a class="red-text"><i class="fa fa-times"></i></a>
+                        </td>
+                    </tr> -->
+                </tbody>
+            </table>
+        </div>
+        <div class="m_section key_list" data-origin="s_key_u"></div>
+        <!-- <div class="m_section" data-origin="s_key_g"></div>
+        <div class="m_section" data-origin="group"></div> -->
     </div>
     <!-- /.main area -->
     <!-- SCRIPTS -->

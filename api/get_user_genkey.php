@@ -3,8 +3,6 @@
     require('init_0.php');
     @$creator=$_REQUEST['creator'];
     @$shareState=intval($_REQUEST['shareState']);
-    echo json_encode($creator); 
-    echo json_encode($shareState); 
     $sql="SELECT * FROM KeyInfo WHERE creator = '$creator' AND shareState = $shareState;";
     $result=mysqli_query($conn,$sql);
     if(mysqli_num_rows($result) > 0){

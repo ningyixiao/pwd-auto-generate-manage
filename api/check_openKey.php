@@ -2,25 +2,22 @@
     header("Content-type:application/json;charset=utf-8");
     require('init_0.php');
     @$nickname=$_REQUEST['nickname'];
+    @$openKey=$_REQUEST['openKey'];
     $sql="SELECT * FROM UserInfo WHERE nickname = '$nickname';";
     $result=mysqli_query($conn,$sql);
-    if($result){
-        $userInfo=mysqli_fetch_assoc($result);
-        if($userInfo!==null){
-            if(strcmp($userInfo["openKey"],"") == 0){
-                $data['msg']='openKey not set yet';
-                $data['checkState']=false;
-            }else{
-                $data['msg']='ok';
-                $data['checkState']=true;
-            }
+    if(mysqli_num_rows($result) == 1){
+        $row=mysqli_fetch_assoc($result);
+        if(strcmp($row["openKey"],$openKey) == 0){
+            $data['msg']='openKey correct';
+            $data['state']=1;
+            $data['openKey'] = $openKey;
         }else{
-            $data['msg']='user not exist';
-            $data['checkState']=false;
+            $data['msg']='openKey incorrect';
+            $data['state']=0;
         }
     }else{
-        $data['msg']='UserInfo table is empty';
-        $data['checkState']=false;
+        $data['msg']='user not exist';
+        $data['state']=0;
     }
     echo json_encode($data);    
 ?>

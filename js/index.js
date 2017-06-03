@@ -125,7 +125,7 @@ $(function() {
             // if openKey is set, then show save key modal
             $.ajax({
                 type: "post",
-                url: "api/check_openKey.php",
+                url: "api/check_openKey_set.php",
                 data: { "nickname": $.cookie("nickname") },
                 dataType: "json",
                 success: function(data) {

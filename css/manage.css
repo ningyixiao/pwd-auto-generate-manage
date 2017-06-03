@@ -241,7 +241,9 @@
     right: 0;
     bottom: 0;
 }
-
+.key_list{
+    padding: 2rem;
+}
 .m_section .card {
     width: 50%;
     margin-left: 25%;
@@ -260,4 +262,26 @@
 .set_info1,
 .set_info2 {
     display: none;
+}
+
+.table tr th:nth-child(1){
+    width: 30%;
+}
+.table tr th:nth-child(2){
+    width: 50%;
+}
+.table tr th:nth-child(3){
+    width: 20%;
+}
+.table tr td a:nth-child(1){
+    margin-left: 0;
+}
+
+/* for modal */
+#enter_openKey_info {
+    display: none;
+    position: absolute;
+    right: 0.8rem;
+    top: 0.8rem;
+    color: red;
 }

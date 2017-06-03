@@ -1,4 +1,16 @@
+// AES algorithm
+function encryptAES(rowKey, openKey) {
+    return CryptoJS.AES.encrypt(rowKey, openKey).toString();
+}
+
+function decryptAES(encKey, openKey) {
+    return CryptoJS.AES.decrypt(encKey, openKey).toString(CryptoJS.enc.Utf8);
+}
+
 $(function() {
+    var globalData = {
+        "userKeyList": []
+    };
     // listen a.func_link click event
     $("a.func_link").click(function(e) {
         e.preventDefault();
@@ -23,13 +35,39 @@ $(function() {
                 dataType: "json",
                 success: function(data) {
                     // list data.keyList in corresponding area
-                    
+                    if (data.state == 1) {
+                        // set globalData.userKeyList
+                        globalData.userKeyList = data.keyList;
+                        var keyList = data.keyList;
+                        var html = "";
+                        for (var i = 0; i < keyList.length; i++) {
+                            html += `
+                            <tr data-index=${i}>
+                                <td>${keyList[i].feature}</td>
+                                <td>******</td>
+                                <td>
+                                    <a id="${keyList[i].kid}_key_look" data-index=${i} class="blue-text key_look"><i class="fa fa-eye"></i></a>
+                                    <a id="${keyList[i].kid}_key_edit" data-index=${i} class="teal-text key_edit"><i class="fa fa-pencil"></i></a>
+                                    <a id="${keyList[i].kid}_key_share" data-index=${i} class="blue-grey-text key_share"><i class="fa fa-share-alt"></i></a>
+                                    <a id="${keyList[i].kid}_key_delete" data-index=${i} class="red-text key_delete"><i class="fa fa-times"></i></a>
+                                </td>
+                            </tr>
+                            `;
+                        }
+                        $("#p_key_list").html(html);
+                    } else {
+                        // tell user get keyList fail
+                        var html = `
+                            <th class="deep-orange-text" style="text-align:center;width:100%;">
+                                ${data.msg}
+                            </th>`;
+                        $("#p_key_list").html(html);
+                    }
                 },
-                error: function() {}
+                error: function() {
+                    console.log("ajax error");
+                }
             });
-        }
-        if (target.hasClass("group")) {
-            // post a http request for group
         }
         // display area
         $(".m_section").css("display", "none");
@@ -111,5 +149,67 @@ $(function() {
         $(".set_info2").css("display", "none");
         $(".set_info_box").removeClass("set_success");
         $(".set_info_box").removeClass("set_fail");
+    });
+
+    // listen key operation[look/edit/share/delete] click event
+    $("#p_key_list").on("click", "a", function(e) {
+        var that = $(this);
+        // look operation
+        if (that.hasClass("key_look")) {
+            var index = that.data("index");
+            if (that.children("i").hasClass("fa-eye")) {
+                $("#modalLookKeyForm").data("index", index);
+                $("#modalLookKeyForm").modal("show");
+            } else {
+                $("#p_key_list tr[data-index=" + index + "] td:nth-child(2)").html("******");
+                $("#p_key_list a[data-index=" + index + "] i.fa-eye-slash").removeClass("fa-eye-slash").addClass("fa-eye");
+            }
+        }
+        // edit operation
+        // share operation
+        // delete operation
+    });
+
+    // listen confirm_openKey_btn click event
+    $("#confirm_openKey_btn").click(function() {
+        // judge the cookie existence state
+        if ($.cookie("nickname") == null) {
+            window.location.href = "index.php";
+        }
+        var openKey = $("#enter_openKey").val();
+        if (openKey.length == 0) {
+            // not allowed null info
+            $("#enter_openKey_info").html("not allowed null");
+            $("#enter_openKey_info").css("display", "block");
+        } else {
+            // post a http request for user openKey
+            var nickname = $.cookie("nickname");
+            var data = {
+                "nickname": nickname,
+                "openKey": md5(openKey)
+            }
+            $.ajax({
+                type: "post",
+                url: "api/check_openKey.php",
+                data: data,
+                dataType: "json",
+                success: function(data) {
+                    if (data.state == 1) {
+                        // decrypt the key with md5(openKey)
+                        // get the key index of keyList
+                        var idx = $("#modalLookKeyForm").data("index");
+                        var encryptKey = globalData.userKeyList[idx].genKey;
+                        var decryptKey = decryptAES(encryptKey, data.openKey);
+                        // find the key position, and replace the '******'
+                        $("#p_key_list tr[data-index=" + idx + "] td:nth-child(2)").html(decryptKey);
+                        // after replace, close the modal, and set the eye to eye-slash
+                        $("#enter_openKey").val("");
+                        $("#modalLookKeyForm").modal("hide");
+                        $("#p_key_list a[data-index=" + idx + "] i.fa-eye").removeClass("fa-eye").addClass("fa-eye-slash");
+                    }
+                },
+                error: function() {}
+            });
+        }
     });
 })
