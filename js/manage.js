@@ -154,8 +154,8 @@ $(function() {
     // listen key operation[look/edit/share/delete] click event
     $("#p_key_list").on("click", "a", function(e) {
         var that = $(this);
-        // look operation
         if (that.hasClass("key_look")) {
+            // look operation
             var index = that.data("index");
             if (that.children("i").hasClass("fa-eye")) {
                 $("#modalLookKeyForm").data("index", index);
@@ -164,12 +164,25 @@ $(function() {
                 $("#p_key_list tr[data-index=" + index + "] td:nth-child(2)").html("******");
                 $("#p_key_list a[data-index=" + index + "] i.fa-eye-slash").removeClass("fa-eye-slash").addClass("fa-eye");
             }
+        } else if (that.hasClass("key_edit")) {
+            // edit operation
+            var index = that.data("index");
+            var kid = parseInt(that.attr("id"));
+            $("#modalEditKeyForm").data("index", index);
+            $("#modalEditKeyForm").data("kid", kid);
+            $("#modalEditKeyForm").modal("show");
         }
-        // edit operation
         // share operation
         // delete operation
     });
-
+    // listen focus event of modal input box
+    $("#enter_openKey").focus(function() {
+        $("#enter_openKey_info").css("display", "none");
+    });
+    $("#edit_feature").focus(function() {
+        $("#enter_openKey_info").css("display", "none");
+    });
+    
     // listen confirm_openKey_btn click event
     $("#confirm_openKey_btn").click(function() {
         // judge the cookie existence state
@@ -206,6 +219,52 @@ $(function() {
                         $("#enter_openKey").val("");
                         $("#modalLookKeyForm").modal("hide");
                         $("#p_key_list a[data-index=" + idx + "] i.fa-eye").removeClass("fa-eye").addClass("fa-eye-slash");
+                    } else {
+                        $("#enter_openKey_info").html(data.msg);
+                        $("#enter_openKey_info").css("display", "block");
+                    }
+                },
+                error: function() {}
+            });
+        }
+    });
+
+    // listen confirm_feature_btn click event
+    $("#confirm_feature_btn").click(function() {
+        // judge the cookie existence state
+        if ($.cookie("nickname") == null) {
+            window.location.href = "index.php";
+        }
+        var feature = $("#edit_feature").val();
+        if (feature.length == 0) {
+            // not allowed null info
+            $("#edit_feature_info").html("not allowed null");
+            $("#edit_feature_info").css("display", "block");
+        } else {
+            // post a http request for user openKey
+            var kid = $("#modalEditKeyForm").data("kid");
+            var data = {
+                "kid": kid,
+                "feature": feature
+            }
+            $.ajax({
+                type: "post",
+                url: "api/edit_key_feature.php",
+                data: data,
+                dataType: "json",
+                success: function(data) {
+                    if (data.state == 1) {
+                        var feature = data.feature;
+                        // get the key index of keyList
+                        var idx = $("#modalEditKeyForm").data("index");
+                        // find the description position, and replace the original one
+                        $("#p_key_list tr[data-index=" + idx + "] td:nth-child(1)").html(feature);
+                        // after replace, close the modal
+                        $("#edit_feature").val("");
+                        $("#modalEditKeyForm").modal("hide");
+                    } else {
+                        $("#edit_feature_info").html(data.msg);
+                        $("#edit_feature_info").css("display", "block");
                     }
                 },
                 error: function() {}
