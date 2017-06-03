@@ -10,7 +10,8 @@ function decryptAES(encKey, openKey) {
 $(function() {
     var globalData = {
         "userKeyList": [],
-        "targetUser": {}
+        "targetUser": {},
+        "shareState": 0
     };
     // listen a.func_link click event
     $("a.func_link").click(function(e) {
@@ -25,6 +26,8 @@ $(function() {
         if (target.hasClass("key")) {
             // post a http request for key
             var shareState = target.data("share");
+            // set globalData.shareState
+            globalData.shareState = parseInt(shareState);
             var data = {
                 "creator": $.cookie("nickname"),
                 "shareState": shareState
@@ -41,8 +44,9 @@ $(function() {
                         globalData.userKeyList = data.keyList;
                         var keyList = data.keyList;
                         var html = "";
-                        for (var i = 0; i < keyList.length; i++) {
-                            html += `
+                        if (parseInt(shareState) == 1) {
+                            for (var i = 0; i < keyList.length; i++) {
+                                html += `
                             <tr data-index=${i}>
                                 <td>${keyList[i].feature}</td>
                                 <td>******</td>
@@ -54,15 +58,35 @@ $(function() {
                                 </td>
                             </tr>
                             `;
+                            }
+                            $("#p_key_list").html(html);
+                        } else {
+                            for (var j = 0; j < keyList.length; j++) {
+                                html += `
+                                    <tr data-index=${j}>
+                                        <td>${keyList[j].feature}</td>
+                                        <td>******</td>
+                                        <td>${keyList[j].targetUser}</td>
+                                        <td>
+                                            <a id="${keyList[j].kid}_key_look" data-index=${j} class="blue-text key_look"><i class="fa fa-eye"></i></a>
+                                            <a id="${keyList[j].kid}_key_share" data-index=${j} class="blue-grey-text key_cancel_share"><i class="fa fa-chain-broken"></i></a>
+                                        </td>
+                                    </tr>`;
+                            }
+                            $("#s_key_u_list").html(html);
                         }
-                        $("#p_key_list").html(html);
+
                     } else {
-                        // tell user get keyList fail
+                        // tell user get keyList null
                         var html = `
-                            <th class="deep-orange-text" style="text-align:center;width:100%;">
+                            <th class="blue-grey-text" style="text-align:center;width:100%;">
                                 ${data.msg}
                             </th>`;
-                        $("#p_key_list").html(html);
+                        if (parseInt(shareState) == 1) {
+                            $("#p_key_list").html(html);
+                        } else {
+                            $("#s_key_u_list").html(html);
+                        }
                     }
                 },
                 error: function() {
@@ -152,6 +176,7 @@ $(function() {
         $(".set_info_box").removeClass("set_fail");
     });
 
+    //=== For Key Repository->private key Module ===
     // listen key operation[look/edit/share/delete] click event
     $("#p_key_list").on("click", "a", function(e) {
         var that = $(this);
@@ -182,6 +207,7 @@ $(function() {
         }
         // delete operation
     });
+
     // listen focus event of modal input box
     $("#enter_openKey").focus(function() {
         $("#enter_openKey_info").css("display", "none");
@@ -191,6 +217,9 @@ $(function() {
     });
     $("#share_target_user").focus(function() {
         $("#share_target_user_info").css("display", "none");
+    });
+    $("#share_openKey").focus(function() {
+        $("#share_openKey_info").css("display", "none");
     });
 
     // listen confirm_openKey_btn click event
@@ -223,12 +252,22 @@ $(function() {
                         var idx = $("#modalLookKeyForm").data("index");
                         var encryptKey = globalData.userKeyList[idx].genKey;
                         var decryptKey = decryptAES(encryptKey, data.openKey);
-                        // find the key position, and replace the '******'
-                        $("#p_key_list tr[data-index=" + idx + "] td:nth-child(2)").html(decryptKey);
-                        // after replace, close the modal, and set the eye to eye-slash
-                        $("#enter_openKey").val("");
-                        $("#modalLookKeyForm").modal("hide");
-                        $("#p_key_list a[data-index=" + idx + "] i.fa-eye").removeClass("fa-eye").addClass("fa-eye-slash");
+                        if (globalData.shareState == 1) {
+                            // find the key position, and replace the '******'
+                            $("#p_key_list tr[data-index=" + idx + "] td:nth-child(2)").html(decryptKey);
+                            // after replace, close the modal, and set the eye to eye-slash
+                            $("#enter_openKey").val("");
+                            $("#modalLookKeyForm").modal("hide");
+                            $("#p_key_list a[data-index=" + idx + "] i.fa-eye").removeClass("fa-eye").addClass("fa-eye-slash");
+                        } else {
+                            // find the key position, and replace the '******'
+                            $("#s_key_u_list tr[data-index=" + idx + "] td:nth-child(2)").html(decryptKey);
+                            // after replace, close the modal, and set the eye to eye-slash
+                            $("#enter_openKey").val("");
+                            $("#modalLookKeyForm").modal("hide");
+                            $("#s_key_u_list a[data-index=" + idx + "] i.fa-eye").removeClass("fa-eye").addClass("fa-eye-slash");
+                        }
+
                     } else {
                         $("#enter_openKey_info").html(data.msg);
                         $("#enter_openKey_info").css("display", "block");
@@ -351,19 +390,45 @@ $(function() {
                     data: data,
                     dataType: "json",
                     success: function(data) {
-                        if(data.state == 1){
+                        if (data.state == 1) {
                             alert("share success");
                             // Then close the modal
                             $("#share_target_user").val("");
                             $("#share_openKey").val("");
                             $("#modalShareKeyForm").modal("hide");
-                        }else{
+                        } else {
                             alert(data.msg);
                         }
                     },
                     error: function() {}
                 })
             }
+        }
+    });
+
+    //=== For Key Repository->share with user module ===
+    // listen key operation[look/edit/share/delete] click event
+    $("#s_key_u_list").on("click", "a", function(e) {
+        var that = $(this);
+        if (that.hasClass("key_look")) {
+            // look operation
+            var index = that.data("index");
+            if (that.children("i").hasClass("fa-eye")) {
+                $("#modalLookKeyForm").data("index", index);
+                $("#modalLookKeyForm").modal("show");
+            } else {
+                $("#s_key_u_list tr[data-index=" + index + "] td:nth-child(2)").html("******");
+                $("#s_key_u_list a[data-index=" + index + "] i.fa-eye-slash").removeClass("fa-eye-slash").addClass("fa-eye");
+            }
+        } else if (that.hasClass("key_cancel_share")) {
+            // cancel share operation
+            var index = that.data("index");
+            var kid = parseInt(that.attr("id"));
+            $("#modalCancelShareForm").data("index", index);
+            $("#modalCancelShareForm").data("kid", kid);
+            $("#modalCancelShareForm").modal("show");
+        } else {
+            console.log("key operation can't be recognized.");
         }
     });
 })

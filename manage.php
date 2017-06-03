@@ -84,6 +84,15 @@
                     </ul>
                 </div>
             </div>
+            <div class="section">
+                <input type="radio" name="accordion-1" id="section-3" value="toggle" />
+                <label for="section-3"><span>Key From Others</span></label>
+                <div class="content">
+                    <ul>
+                        <li><i class="fa fa-group"></i><a class="func_link group">receive from user</a></li>
+                    </ul>
+                </div>
+            </div>
             <!-- <div class="section">
                 <input type="radio" name="accordion-1" id="section-3" value="toggle" />
                 <label for="section-3"><span>Group</span></label>
@@ -228,8 +237,8 @@
                     </div>
             </div>
         </div>
-        <div class="m_section key_list" data-origin="p_key">
-            <div style="text-align: center;font-size: 1.8rem;padding-bottom:1rem;">Privete Key</div>
+        <div id="private_key_section" class="m_section key_list" data-origin="p_key">
+            <div style="text-align: center;font-size: 1.8rem;padding-bottom:1rem;">Privete Key List</div>
             <table class="table">
                 <thead class="thead-inverse">
                     <tr>
@@ -252,7 +261,30 @@
                 </tbody>
             </table>
         </div>
-        <div class="m_section key_list" data-origin="s_key_u"></div>
+        <div id="share_key_user_section" class="m_section key_list" data-origin="s_key_u">
+            <div style="text-align: center;font-size: 1.8rem;padding-bottom:1rem;">Shared Key List</div>
+            <table class="table">
+                <thead class="thead-inverse">
+                    <tr>
+                        <th>Description</th>
+                        <th>Key</th>
+                        <th>targetUser</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="s_key_u_list">
+                    <!-- <tr>
+                        <td>Abby</td>
+                        <td>Barrett</td>
+                        <td>Barrett</td>
+                        <td>
+                            <a class="blue-text"><i class="fa fa-eye"></i></a>
+                            <a class="blue-grey-text"><i class="fa fa-chain-broken"></i></a>
+                        </td>
+                    </tr> -->
+                </tbody>
+            </table>
+        </div>
         <!-- <div class="m_section" data-origin="s_key_g"></div>
         <div class="m_section" data-origin="group"></div> -->
     </div>

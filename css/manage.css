@@ -266,15 +266,30 @@
     display: none;
 }
 
-.table tr th:nth-child(1) {
+/* for p_key_list */
+#private_key_section .table tr th:nth-child(1) {
     width: 30%;
 }
 
-.table tr th:nth-child(2) {
+#private_key_section .table tr th:nth-child(2) {
     width: 50%;
 }
 
-.table tr th:nth-child(3) {
+#private_key_section .table tr th:nth-child(3) {
+    width: 20%;
+}
+
+/* for s_key_u_list */
+#share_key_user_section .table tr th:nth-child(1) {
+    width: 30%;
+}
+#share_key_user_section .table tr th:nth-child(2) {
+    width: 30%;
+}
+#share_key_user_section .table tr th:nth-child(3) {
+    width: 20%;
+}
+#share_key_user_section .table tr th:nth-child(4) {
     width: 20%;
 }
 

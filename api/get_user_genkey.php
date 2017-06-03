@@ -13,7 +13,7 @@
         $data['msg']="get user key success";
         $data['state']=1;
     }else{
-        $data['msg']="No private key, please save one.";
+        $data['msg']="No key.";
         $data['state']=0;
     }
     echo json_encode($data);    
