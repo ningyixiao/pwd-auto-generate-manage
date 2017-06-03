@@ -141,7 +141,7 @@
                 <div class="modal-body mb-0">
                     <div class="md-form form-sm">
                         <i class="fa fa-pencil-square-o prefix"></i>
-                        <input type="password" id="edit_feature" class="form-control">
+                        <input type="text" id="edit_feature" class="form-control">
                         <label for="form8">key description</label>
                         <div id="edit_feature_info"></div>
                     </div>
@@ -154,6 +154,41 @@
         </div>
     </div>
     <!-- /.Modal: Edit Key -->
+    <!-- Modal: Share Key -->
+    <div class="modal fade" id="modalShareKeyForm" tabindex="-1" role="dialog" aria-labelledby="modalShareKeyFormLabel" aria-hidden="true">
+        <div class="modal-dialog cascading-modal" role="document">
+            <!--Content-->
+            <div class="modal-content">
+                <!--Header-->
+                <div class="modal-header light-blue darken-3 white-text">
+                    <button type="button" class="close waves-effect waves-light" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="title"><i class="fa fa-share-alt"></i> Share Key</h4>
+                </div>
+                <!--Body-->
+                <div class="modal-body mb-0">
+                    <div class="md-form form-sm">
+                        <i class="fa fa-pencil-square-o prefix"></i>
+                        <input type="password" id="share_target_user" class="form-control">
+                        <label for="form8">target nickname</label>
+                        <div id="share_target_user_info"></div>
+                    </div>
+                    <div class="md-form form-sm">
+                        <i class="fa fa-pencil-square-o prefix"></i>
+                        <input type="password" id="share_openKey" class="form-control">
+                        <label for="form8">your openKey</label>
+                        <div id="share_openKey_info"></div>
+                    </div>
+                    <div class="text-center mt-1-half">
+                        <button id="confirm_share_btn" class="btn btn-info mb-2 waves-effect waves-light">Confirm</button>
+                    </div>
+                </div>
+            </div>
+            <!--/.Content-->
+        </div>
+    </div>
+    <!-- /.Modal: Share Key -->
     <!-- main area -->
     <div id="main" class="main">
         <div class="m_section" data-origin="set">
@@ -194,6 +229,7 @@
             </div>
         </div>
         <div class="m_section key_list" data-origin="p_key">
+            <div style="text-align: center;font-size: 1.8rem;padding-bottom:1rem;">Privete Key</div>
             <table class="table">
                 <thead class="thead-inverse">
                     <tr>

@@ -9,7 +9,8 @@ function decryptAES(encKey, openKey) {
 
 $(function() {
     var globalData = {
-        "userKeyList": []
+        "userKeyList": [],
+        "targetUser": {}
     };
     // listen a.func_link click event
     $("a.func_link").click(function(e) {
@@ -171,8 +172,14 @@ $(function() {
             $("#modalEditKeyForm").data("index", index);
             $("#modalEditKeyForm").data("kid", kid);
             $("#modalEditKeyForm").modal("show");
+        } else if (that.hasClass("key_share")) {
+            // share operation
+            var index = that.data("index");
+            var kid = parseInt(that.attr("id"));
+            $("#modalShareKeyForm").data("index", index);
+            $("#modalShareKeyForm").data("kid", kid);
+            $("#modalShareKeyForm").modal("show");
         }
-        // share operation
         // delete operation
     });
     // listen focus event of modal input box
@@ -182,7 +189,10 @@ $(function() {
     $("#edit_feature").focus(function() {
         $("#enter_openKey_info").css("display", "none");
     });
-    
+    $("#share_target_user").focus(function() {
+        $("#share_target_user_info").css("display", "none");
+    });
+
     // listen confirm_openKey_btn click event
     $("#confirm_openKey_btn").click(function() {
         // judge the cookie existence state
@@ -269,6 +279,91 @@ $(function() {
                 },
                 error: function() {}
             });
+        }
+    });
+
+    // listen share_target_user blur event
+    $("#share_target_user").blur(function() {
+        // judge the cookie existence state
+        if ($.cookie("nickname") == null) {
+            window.location.href = "index.php";
+        }
+        var targetUser = $("#share_target_user").val();
+        if (targetUser !== $.cookie("nickname")) {
+            $.ajax({
+                type: "post",
+                url: "api/check_targetUser_exist.php",
+                data: { "targetUser": targetUser },
+                dataType: "json",
+                success: function(data) {
+                    if (data.state == 1) {
+                        // assign the openKey to globalData.targetUser
+                        globalData.targetUser = {
+                            "exist": true,
+                            "openKey": data.openKey
+                        };
+                    } else {
+                        $("#share_target_user_info").html(data.msg);
+                        $("#share_target_user_info").css("display", "block");
+                    }
+                },
+                error: function() {}
+            });
+        } else {
+            $("#share_target_user_info").html("can't share yourself");
+            $("#share_target_user_info").css("display", "block");
+        }
+    });
+    // listen confirm_share_btn click event
+    $("#confirm_share_btn").click(function() {
+        // judge the cookie existence state
+        if ($.cookie("nickname") == null) {
+            window.location.href = "index.php";
+        }
+        var targetUser = $("#share_target_user").val();
+        var openKey = $("#share_openKey").val();
+        if (targetUser.length == 0) {
+            // not allowed null info
+            $("#share_target_user_info").html("not allowed null");
+            $("#share_target_user_info").css("display", "block");
+        } else if (openKey.length == 0) {
+            // not allowed null info
+            $("#share_openKey_info").html("not allowed null");
+            $("#share_openKey_info").css("display", "block");
+        } else {
+            if (globalData.targetUser.exist) {
+                // post a http request for share key
+                var kid = $("#modalShareKeyForm").data("kid");
+                // decrypt key with user openKey
+                var idx = parseInt($("#modalShareKeyForm").data("index"));
+                var encKey = globalData.userKeyList[idx].genKey;
+                var decKey = decryptAES(encKey, md5(openKey));
+                // encrypt key with targetUser openKey
+                var encShareKey = encryptAES(decKey, globalData.targetUser.openKey);
+                var data = {
+                    "kid": kid,
+                    "targetUser": targetUser,
+                    "uKey": encShareKey
+                }
+                $.ajax({
+                    type: "post",
+                    url: "api/share_key_toUser.php",
+                    data: data,
+                    dataType: "json",
+                    success: function(data) {
+                        if(data.state == 1){
+                            alert("share success");
+                            // Then close the modal
+                            $("#share_target_user").val("");
+                            $("#share_openKey").val("");
+                            $("#modalShareKeyForm").modal("hide");
+                        }else{
+                            alert(data.msg);
+                        }
+                    },
+                    error: function() {}
+                })
+            }
         }
     });
 })
