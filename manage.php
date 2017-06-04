@@ -89,7 +89,7 @@
                 <label for="section-3"><span>Key From Others</span></label>
                 <div class="content">
                     <ul>
-                        <li><i class="fa fa-group"></i><a class="func_link group">receive from user</a></li>
+                        <li><i class="fa fa-group"></i><a class="func_link u_s_key" id="key_f_u">receive from user</a></li>
                     </ul>
                 </div>
             </div>
@@ -198,6 +198,35 @@
         </div>
     </div>
     <!-- /.Modal: Share Key -->
+    <!-- Modal: Cancel Share Key-->
+    <div class="modal fade" id="modalCancelShareForm" tabindex="-1" role="dialog" aria-labelledby="modalCancelShareFormLabel" aria-hidden="true">
+        <div class="modal-dialog modal-notify modal-info" role="document">
+            <!--Content-->
+            <div class="modal-content">
+                <!--Header-->
+                <div class="modal-header">
+                    <p class="heading lead">Cancel Share</p>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true" class="white-text">×</span>
+                    </button>
+                </div>
+                <!--Body-->
+                <div class="modal-body">
+                    <div class="text-center">
+                        <p>Do you really want to cancel the shared key?</p>
+                    </div>
+                </div>
+                <!--Footer-->
+                <div class="modal-footer justify-content-center">
+                    <a id="cancel_share_btn" type="button" class="btn btn-primary-modal waves-effect waves-light">Confirm</a>
+                    <a type="button" class="btn btn-outline-secondary-modal waves-effect" data-dismiss="modal">No</a>
+                </div>
+            </div>
+            <!--/.Content-->
+        </div>
+    </div>
+    
+    <!-- /.Modal: Cancel Share Key -->
     <!-- main area -->
     <div id="main" class="main">
         <div class="m_section" data-origin="set">
@@ -273,6 +302,30 @@
                     </tr>
                 </thead>
                 <tbody id="s_key_u_list">
+                    <!-- <tr>
+                        <td>Abby</td>
+                        <td>Barrett</td>
+                        <td>Barrett</td>
+                        <td>
+                            <a class="blue-text"><i class="fa fa-eye"></i></a>
+                            <a class="blue-grey-text"><i class="fa fa-chain-broken"></i></a>
+                        </td>
+                    </tr> -->
+                </tbody>
+            </table>
+        </div>
+        <div id="share_key_user_section" class="m_section key_list" data-origin="key_f_u">
+            <div style="text-align: center;font-size: 1.8rem;padding-bottom:1rem;">Key From Others List</div>
+            <table class="table">
+                <thead class="thead-inverse">
+                    <tr>
+                        <th>Description</th>
+                        <th>Key</th>
+                        <th>Owner</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="key_f_u_list">
                     <!-- <tr>
                         <td>Abby</td>
                         <td>Barrett</td>

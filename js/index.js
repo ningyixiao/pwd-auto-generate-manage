@@ -179,13 +179,13 @@ $(function() {
                             data: data,
                             dataType: "json",
                             success: function(data) {
-                                if(data.state == 1){
+                                if (data.state == 1) {
                                     window.location.href = "manage.php";
-                                }else{
+                                } else {
                                     alert(data.msg);
                                 }
                             },
-                            error:function(){}
+                            error: function() {}
                         });
                     } else {
                         // get openKey fail
@@ -289,7 +289,7 @@ $(function() {
         }
     });
 
-    // login controll
+    // === login controll === 
     $("#log_btn").click(function(e) {
         var nickname = $("#log_nickname").val();
         var pwd = $("#log_pwd").val();
@@ -310,10 +310,19 @@ $(function() {
                         $("#modalLoginForm").modal('hide');
                         $("#userdropdownMenu").html(data.nickname);
                         window.location.href = "index.php";
+                    } else {
+                        $("#log_pwd_info").html(data.msg);
+                        $("#log_pwd_info").css("display", "block");
                     }
                 },
                 error: function() {}
             });
         }
+    });
+    $("#log_pwd").focus(function() {
+        $("#log_pwd_info").css("display", "none");
+    });
+    $("#log_nickname").focus(function() {
+        $("#log_pwd_info").css("display", "none");
     });
 })

@@ -10,6 +10,7 @@ function decryptAES(encKey, openKey) {
 $(function() {
     var globalData = {
         "userKeyList": [],
+        "keyFromOthersList": [],
         "targetUser": {},
         "shareState": 0
     };
@@ -23,6 +24,7 @@ $(function() {
             window.location.href = "index.php";
         }
         // when the cookie exists, continue
+        // judge which panel will be show, and list the key
         if (target.hasClass("key")) {
             // post a http request for key
             var shareState = target.data("share");
@@ -92,6 +94,47 @@ $(function() {
                 error: function() {
                     console.log("ajax error");
                 }
+            });
+        } else if (target.hasClass("u_s_key")) {
+            // set globalData.shareState
+            // 1-p,2-share_to_u,3-share_to_g
+            //4-receive_from_user,5-receive_from_group
+            globalData.shareState = 4;
+            var targetUser = $.cookie("nickname");
+            $.ajax({
+                type: "post",
+                url: "api/get_other_user_shareKey.php",
+                data: { "targetUser": targetUser },
+                dataType: "json",
+                success: function(data) {
+                    if (data.state == 1) {
+                        // set globalData.keyFromOthersList
+                        globalData.keyFromOthersList = data.keyList;
+                        var keyList = data.keyList;
+                        var html = "";
+                        for (var k = 0; k < keyList.length; k++) {
+                            html += `
+                            <tr data-index=${k}>
+                                <td>${keyList[k].feature}</td>
+                                <td>******</td>
+                                <td>${keyList[k].creator}</td>
+                                <td>
+                                    <a id="${keyList[k].kid}_key_look" data-index=${k} class="blue-text key_look"><i class="fa fa-eye"></i></a>
+                                </td>
+                            </tr>
+                            `;
+                        }
+                        $("#key_f_u_list").html(html);
+                    } else {
+                        // tell user get keyList null
+                        var html = `
+                            <th class="blue-grey-text" style="text-align:center;width:100%;">
+                                ${data.msg}
+                            </th>`;
+                        $("#key_f_u_list").html(html);
+                    }
+                },
+                error: function() {}
             });
         }
         // display area
@@ -250,23 +293,36 @@ $(function() {
                         // decrypt the key with md5(openKey)
                         // get the key index of keyList
                         var idx = $("#modalLookKeyForm").data("index");
-                        var encryptKey = globalData.userKeyList[idx].genKey;
-                        var decryptKey = decryptAES(encryptKey, data.openKey);
+                        var encryptKey = "";
+                        var decryptKey = "";
                         if (globalData.shareState == 1) {
+                            encryptKey = globalData.userKeyList[idx].genKey;
+                            decryptKey = decryptAES(encryptKey, data.openKey);
                             // find the key position, and replace the '******'
                             $("#p_key_list tr[data-index=" + idx + "] td:nth-child(2)").html(decryptKey);
                             // after replace, close the modal, and set the eye to eye-slash
                             $("#enter_openKey").val("");
                             $("#modalLookKeyForm").modal("hide");
                             $("#p_key_list a[data-index=" + idx + "] i.fa-eye").removeClass("fa-eye").addClass("fa-eye-slash");
-                        } else {
+                        } else if (globalData.shareState == 2) {
+                            encryptKey = globalData.userKeyList[idx].genKey;
+                            decryptKey = decryptAES(encryptKey, data.openKey);
                             // find the key position, and replace the '******'
                             $("#s_key_u_list tr[data-index=" + idx + "] td:nth-child(2)").html(decryptKey);
                             // after replace, close the modal, and set the eye to eye-slash
                             $("#enter_openKey").val("");
                             $("#modalLookKeyForm").modal("hide");
                             $("#s_key_u_list a[data-index=" + idx + "] i.fa-eye").removeClass("fa-eye").addClass("fa-eye-slash");
-                        }
+                        } else if (globalData.shareState == 4) {
+                            encryptKey = globalData.keyFromOthersList[idx].uKey;
+                            decryptKey = decryptAES(encryptKey, data.openKey);
+                            // find the key position, and replace the '******'
+                            $("#key_f_u_list tr[data-index=" + idx + "] td:nth-child(2)").html(decryptKey);
+                            // after replace, close the modal, and set the eye to eye-slash
+                            $("#enter_openKey").val("");
+                            $("#modalLookKeyForm").modal("hide");
+                            $("#key_f_u_list a[data-index=" + idx + "] i.fa-eye").removeClass("fa-eye").addClass("fa-eye-slash");
+                        } else {}
 
                     } else {
                         $("#enter_openKey_info").html(data.msg);
@@ -392,6 +448,8 @@ $(function() {
                     success: function(data) {
                         if (data.state == 1) {
                             alert("share success");
+                            // find and remove the key from the panel
+                            $("#p_key_list tr[data-index=" + idx + "]").remove();
                             // Then close the modal
                             $("#share_target_user").val("");
                             $("#share_openKey").val("");
@@ -407,7 +465,7 @@ $(function() {
     });
 
     //=== For Key Repository->share with user module ===
-    // listen key operation[look/edit/share/delete] click event
+    // listen key operation[look/cancel share] click event
     $("#s_key_u_list").on("click", "a", function(e) {
         var that = $(this);
         if (that.hasClass("key_look")) {
@@ -427,6 +485,57 @@ $(function() {
             $("#modalCancelShareForm").data("index", index);
             $("#modalCancelShareForm").data("kid", kid);
             $("#modalCancelShareForm").modal("show");
+        } else {
+            console.log("key operation can't be recognized.");
+        }
+    });
+
+    // listen cancel_share_btn click event
+    $("#cancel_share_btn").click(function() {
+        // judge the cookie existence state
+        if ($.cookie("nickname") == null) {
+            window.location.href = "index.php";
+        }
+        // post a http request for cancel share
+        var kid = $("#modalCancelShareForm").data("kid");
+        var idx = parseInt($("#modalCancelShareForm").data("index"));
+        var data = {
+            "kid": kid
+        };
+        $.ajax({
+            type: "post",
+            url: "api/cancel_share_key_toUser.php",
+            data: data,
+            dataType: "json",
+            success: function(data) {
+                if (data.state == 1) {
+                    alert("cancel share success");
+                    // find and remove the key from the panel
+                    $("#s_key_u_list tr[data-index=" + idx + "]").remove();
+                    // Then close the modal
+                    $("#modalCancelShareForm").modal("hide");
+                } else {
+                    alert(data.msg);
+                }
+            },
+            error: function() {}
+        })
+    });
+
+    //=== For Key From Others->receive from user module ===
+    // listen key operation[look/cancel share] click event
+    $("#key_f_u_list").on("click", "a", function(e) {
+        var that = $(this);
+        if (that.hasClass("key_look")) {
+            // look operation
+            var index = that.data("index");
+            if (that.children("i").hasClass("fa-eye")) {
+                $("#modalLookKeyForm").data("index", index);
+                $("#modalLookKeyForm").modal("show");
+            } else {
+                $("#key_f_u_list tr[data-index=" + index + "] td:nth-child(2)").html("******");
+                $("#key_f_u_list a[data-index=" + index + "] i.fa-eye-slash").removeClass("fa-eye-slash").addClass("fa-eye");
+            }
         } else {
             console.log("key operation can't be recognized.");
         }
