@@ -38,6 +38,9 @@
             </a>
             <div class="collapse navbar-collapse" id="navbarNav1">
                 <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a href="index.php" class="nav-link">Generate</a>
+                    </li>
                     <li class="nav-item dropdown btn-group">
                         <a class="nav-link dropdown-toggle" id="userdropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <?php echo $_COOKIE["nickname"] ?>
@@ -198,6 +201,34 @@
         </div>
     </div>
     <!-- /.Modal: Share Key -->
+    <!-- Modal: Delete Key -->
+    <div class="modal fade" id="modalDeleteKeyForm" tabindex="-1" role="dialog" aria-labelledby="modalDeleteKeyFormLabel" aria-hidden="true">
+        <div class="modal-dialog modal-notify modal-danger" role="document">
+            <!--Content-->
+            <div class="modal-content">
+                <!--Header-->
+                <div class="modal-header">
+                    <p class="heading lead">Delete Key</p>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true" class="white-text">×</span>
+                    </button>
+                </div>
+                <!--Body-->
+                <div class="modal-body">
+                    <div class="text-center">
+                        <p>Be Cautious! Are you sure to delete this key?</p>
+                    </div>
+                </div>
+                <!--Footer-->
+                <div class="modal-footer justify-content-center">
+                    <a id="delete_key_btn" type="button" class="btn btn-primary-modal waves-effect waves-light">Confirm</a>
+                    <a type="button" class="btn btn-outline-secondary-modal waves-effect" data-dismiss="modal">No</a>
+                </div>
+            </div>
+            <!--/.Content-->
+        </div>
+    </div> 
+    <!-- /.Modal: Delete Key -->
     <!-- Modal: Cancel Share Key-->
     <div class="modal fade" id="modalCancelShareForm" tabindex="-1" role="dialog" aria-labelledby="modalCancelShareFormLabel" aria-hidden="true">
         <div class="modal-dialog modal-notify modal-info" role="document">
@@ -224,8 +255,7 @@
             </div>
             <!--/.Content-->
         </div>
-    </div>
-    
+    </div> 
     <!-- /.Modal: Cancel Share Key -->
     <!-- main area -->
     <div id="main" class="main">

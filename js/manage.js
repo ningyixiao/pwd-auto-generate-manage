@@ -247,8 +247,16 @@ $(function() {
             $("#modalShareKeyForm").data("index", index);
             $("#modalShareKeyForm").data("kid", kid);
             $("#modalShareKeyForm").modal("show");
+        } else if (that.hasClass("key_delete")) {
+            // delete operation
+            var index = that.data("index");
+            var kid = parseInt(that.attr("id"));
+            $("#modalDeleteKeyForm").data("index", index);
+            $("#modalDeleteKeyForm").data("kid", kid);
+            $("#modalDeleteKeyForm").modal("show");
+        } else {
+
         }
-        // delete operation
     });
 
     // listen focus event of modal input box
@@ -463,7 +471,38 @@ $(function() {
             }
         }
     });
-
+    // listen delete_key_btn click event
+    $("#delete_key_btn").click(function() {
+        // judge the cookie existence state
+        if ($.cookie("nickname") == null) {
+            window.location.href = "index.php";
+        }
+        // post a http request for cancel share
+        var kid = $("#modalDeleteKeyForm").data("kid");
+        var idx = parseInt($("#modalDeleteKeyForm").data("index"));
+        var data = {
+            "kid": kid
+        };
+        $.ajax({
+            type: "post",
+            url: "api/delete_user_private_key.php",
+            data: data,
+            dataType: "json",
+            success: function(data) {
+                console.log("1")
+                if (data.state == 1) {
+                    alert("delete key success");
+                    // find and remove the key from the panel
+                    $("#p_key_list tr[data-index=" + idx + "]").remove();
+                    // Then close the modal
+                    $("#modalDeleteKeyForm").modal("hide");
+                } else {
+                    alert(data.msg);
+                }
+            },
+            error: function() {}
+        })
+    });
     //=== For Key Repository->share with user module ===
     // listen key operation[look/cancel share] click event
     $("#s_key_u_list").on("click", "a", function(e) {

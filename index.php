@@ -30,6 +30,9 @@
             </a>
             <div class="collapse navbar-collapse" id="navbarNav1">
                 <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">Generate</a>
+                    </li>
                     <?php if(isset($_COOKIE["token"])){ ?>
                     <li id="nav_item1" class="nav-item dropdown btn-group">
                         <a class="nav-link dropdown-toggle" id="userdropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
