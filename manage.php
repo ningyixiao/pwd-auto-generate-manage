@@ -182,7 +182,7 @@
                 <div class="modal-body mb-0">
                     <div class="md-form form-sm">
                         <i class="fa fa-pencil-square-o prefix"></i>
-                        <input type="password" id="share_target_user" class="form-control">
+                        <input type="text" id="share_target_user" class="form-control">
                         <label for="form8">target nickname</label>
                         <div id="share_target_user_info"></div>
                     </div>
@@ -217,6 +217,12 @@
                 <div class="modal-body">
                     <div class="text-center">
                         <p>Be Cautious! Are you sure to delete this key?</p>
+                    </div>
+                    <div class="md-form form-sm">
+                        <i class="fa fa-pencil-square-o prefix"></i>
+                        <input type="password" id="deleteKey_openKey" class="form-control">
+                        <label for="form8">your openKey</label>
+                        <div id="deleteKey_openKey_info"></div>
                     </div>
                 </div>
                 <!--Footer-->

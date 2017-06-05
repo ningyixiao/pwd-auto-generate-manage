@@ -477,31 +477,58 @@ $(function() {
         if ($.cookie("nickname") == null) {
             window.location.href = "index.php";
         }
-        // post a http request for cancel share
-        var kid = $("#modalDeleteKeyForm").data("kid");
-        var idx = parseInt($("#modalDeleteKeyForm").data("index"));
-        var data = {
-            "kid": kid
-        };
-        $.ajax({
-            type: "post",
-            url: "api/delete_user_private_key.php",
-            data: data,
-            dataType: "json",
-            success: function(data) {
-                console.log("1")
-                if (data.state == 1) {
-                    alert("delete key success");
-                    // find and remove the key from the panel
-                    $("#p_key_list tr[data-index=" + idx + "]").remove();
-                    // Then close the modal
-                    $("#modalDeleteKeyForm").modal("hide");
-                } else {
-                    alert(data.msg);
-                }
-            },
-            error: function() {}
-        })
+        var openKey = $("#deleteKey_openKey").val();
+        if (openKey.length == 0) {
+            // not allowed null info
+            $("#deleteKey_openKey_info").html("not allowed null");
+            $("#deleteKey_openKey_info").css("display", "block");
+        } else {
+            // post a http request for user openKey
+            var nickname = $.cookie("nickname");
+            var data = {
+                "nickname": nickname,
+                "openKey": md5(openKey)
+            }
+            $.ajax({
+                type: "post",
+                url: "api/check_openKey.php",
+                data: data,
+                dataType: "json",
+                success: function(data) {
+                    if (data.state == 1) {
+                        // post a http request for cancel share
+                        var kid = $("#modalDeleteKeyForm").data("kid");
+                        var idx = parseInt($("#modalDeleteKeyForm").data("index"));
+                        var data1 = {
+                            "kid": kid
+                        };
+                        $.ajax({
+                            type: "post",
+                            url: "api/delete_user_private_key.php",
+                            data: data1,
+                            dataType: "json",
+                            success: function(data_1) {
+                                console.log("1")
+                                if (data_1.state == 1) {
+                                    alert("delete key success");
+                                    // find and remove the key from the panel
+                                    $("#p_key_list tr[data-index=" + idx + "]").remove();
+                                    // Then close the modal
+                                    $("#modalDeleteKeyForm").modal("hide");
+                                } else {
+                                    alert(data_1.msg);
+                                }
+                            },
+                            error: function() {}
+                        })
+                    } else {
+                        $("#deleteKey_openKey_info").html(data.msg);
+                        $("#deleteKey_openKey_info").css("display", "block")
+                    }
+                },
+                error: function() {}
+            });
+        }
     });
     //=== For Key Repository->share with user module ===
     // listen key operation[look/cancel share] click event

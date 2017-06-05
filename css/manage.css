@@ -331,3 +331,10 @@
     top: 0.8rem;
     color: red;
 }
+#deleteKey_openKey_info{
+    display: none;
+    position: absolute;
+    right: 0.8rem;
+    top: 0.8rem;
+    color: red;
+}
